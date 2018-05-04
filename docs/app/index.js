@@ -1,6 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
+// TODO make themes a monorepo of packages
+import { siteVariables, normalize } from 'semantic-ui-react/themes/teams'
+import { Provider } from 'semantic-ui-react'
+
 import Router from './routes'
 
 // ----------------------------------------
@@ -10,7 +14,30 @@ import Router from './routes'
 const mountNode = document.createElement('div')
 document.body.appendChild(mountNode)
 
-const render = NewApp => ReactDOM.render(<NewApp />, mountNode)
+const render = NewApp =>
+  ReactDOM.render(
+    <Provider
+      siteVariables={siteVariables}
+      staticStyles={[
+        normalize,
+        {
+          html: {
+            fontSize: siteVariables.rem,
+          },
+          body: {
+            padding: siteVariables.bodyPadding,
+            margin: siteVariables.bodyMargin,
+            fontFamily: siteVariables.bodyFontFamily,
+            fontSize: siteVariables.bodyFontSize,
+            lineHeight: siteVariables.lineHeightBase,
+          },
+        },
+      ]}
+    >
+      <NewApp />
+    </Provider>,
+    mountNode,
+  )
 
 // ----------------------------------------
 // HMR
